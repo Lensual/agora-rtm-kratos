@@ -1,0 +1,6 @@
+Agora-RTM-Server-SDK-Go/
+agora_rtm_cache.db
+agorartmdns.dat
+__debug_bin*
+.vscode
+*.env
