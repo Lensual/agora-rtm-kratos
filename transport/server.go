@@ -28,6 +28,14 @@ type Server struct {
 	messageChannelSubscription map[string][]agrtm.RtmEventHandler
 }
 
+// NewServer creates a new Kratos transport server for Agora RTM.
+//
+// rtmSupplier: Since [agrtm.IRtmClient] is designed as a singleton,
+// the [Server] should not take ownership of creating or managing
+// the global [agrtm.IRtmClient] instance.
+//
+// rtmSupplier: 由于 [agrtm.IRtmClient] 采用单例设计，
+// [Server] 不应负责创建或管理全局的 RTM 客户端实例。
 func NewServer(rtmSupplier RtmClientSupplier, opts ...ServerOption) (*Server, error) {
 	s := &Server{
 		serverCtx:       nil,

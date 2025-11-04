@@ -10,7 +10,7 @@ type IRtmMessageChannelService interface {
 	OnMessageEvent(ctx context.Context, event *agrtm.MessageEvent) error
 }
 
-// SMessage Channel 订阅事件处理器
+// Message Channel 订阅事件处理器
 func newMessageChannelSubscription(s *Server, svc IRtmMessageChannelService, channelName string) agrtm.RtmEventHandler {
 	return agrtm.RtmEventHandler{
 		OnMessageEvent: func(event *agrtm.MessageEvent) {

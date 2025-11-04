@@ -86,6 +86,7 @@ func NewCompositeRtmEventHandler(handles ...*agrtm.RtmEventHandler) *agrtm.RtmEv
 				}
 			}
 		},
+		// Deprecated: use OnLinkStateEvent instead.
 		OnConnectionStateChanged: func(channelName string, state, reason int) {
 			for _, h := range handles {
 				if h.OnConnectionStateChanged != nil {

@@ -1,2 +1,2 @@
-// Package utils provides reusable functions that can be used independently.
+// Package utils provides reusable functions for Agora RTM that can be used independently.
 package utils
