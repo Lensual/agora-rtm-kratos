@@ -1,4 +1,4 @@
-module github.com/Lensual/agora-rtm-kratos/example/custom
+module github.com/Lensual/agora-rtm-kratos/example/server
 
 go 1.22.4
 
@@ -8,13 +8,13 @@ replace github.com/Lensual/agora-rtm-kratos => ../../
 replace github.com/AgoraIO-Extensions/Agora-RTM-Server-SDK-Go => ../../Agora-RTM-Server-SDK-Go
 
 require (
-	github.com/AgoraIO-Extensions/Agora-RTM-Server-SDK-Go v0.0.0-00010101000000-000000000000
-	github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src v0.0.0-20250825033728-374cd21f5220
 	github.com/Lensual/agora-rtm-kratos v0.0.0-00010101000000-000000000000
 	github.com/go-kratos/kratos/v2 v2.9.1
 )
 
 require (
+	github.com/AgoraIO-Extensions/Agora-RTM-Server-SDK-Go v0.0.0-00010101000000-000000000000 // indirect
+	github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src v0.0.0-20250825033728-374cd21f5220 // indirect
 	github.com/go-playground/form/v4 v4.2.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.4.0 // indirect

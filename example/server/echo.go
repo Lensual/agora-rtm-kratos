@@ -1,4 +1,4 @@
-package example
+package main
 
 import (
 	"context"
@@ -8,13 +8,13 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-var _ rtmTr.IRtmMessageChannelService = (*MyService)(nil)
+var _ rtmTr.IRtmMessageChannelService = (*EchoService)(nil)
 
-type MyService struct {
+type EchoService struct {
 }
 
 // OnMessageEvent implements transport.IRtmMessageChannelService.
-func (m *MyService) OnMessageEvent(ctx context.Context, event *agorartm.MessageEvent) error {
+func (m *EchoService) OnMessageEvent(ctx context.Context, event *agorartm.MessageEvent) error {
 	log.Info(event)
 	return nil
 }

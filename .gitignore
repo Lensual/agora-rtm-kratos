@@ -1,6 +1,19 @@
+# Agora SDK files
+Agora-RTC-SDK-Go/
 Agora-RTM-Server-SDK-Go/
 agora_rtm_cache.db
 agorartmdns.dat
+agorartmreport.dat
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# build output
 __debug_bin*
+
+# IDE settings
 .vscode
+
+# local config files
 *.env

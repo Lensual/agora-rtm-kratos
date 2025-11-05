@@ -2,6 +2,10 @@
 
 [![GoDoc](https://godoc.org/github.com/Lensual/agora-rtm-kratos?status.svg)](https://pkg.go.dev/github.com/Lensual/agora-rtm-kratos)
 
+Agora RTM SDK for Kratos.
+
+当然也可以直接使用 utils 和 async 包！
+
 ## Feature
 
 - 支持 kratos transport
@@ -91,11 +95,12 @@ rtmConfig.EventHandler = utils.NewCompositeRtmEventHandler(
 
 ## TODO
 
-- [] async，需要将多个回调参数合并成一个结构体。
-- [] 提供 Stream Channel
-- [] 提供 Storage UserMetadata 事件订阅
-- [] Message Channel
-  - [] 支持以点对点方式回复消息
-  - [] 支持 encoding DTO
-- [] 为 transport 的 header 增加一些 metadata
-- [] 完善 Example 注释
+- [x] token 更新逻辑
+- [ ] async，需要将多个回调参数合并成一个结构体。
+- [ ] 提供 Stream Channel
+- [ ] 提供 Storage UserMetadata 事件订阅
+- [ ] Message Channel
+  - [ ] 支持以点对点方式回复消息
+  - [ ] 支持 encoding DTO
+- [ ] 为 transport 的 header 增加一些 metadata
+- [ ] 完善 Example 注释

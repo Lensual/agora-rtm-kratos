@@ -4,14 +4,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"os"
 
-	"github.com/Lensual/agora-rtm-kratos/example"
+	agrtm "github.com/AgoraIO-Extensions/Agora-RTM-Server-SDK-Go/go_sdk/rtm"
+	rtmAsync "github.com/Lensual/agora-rtm-kratos/async"
 	rtmTr "github.com/Lensual/agora-rtm-kratos/transport"
-	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/logging"
 )
 
 var (
@@ -35,38 +35,50 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger := log.With(log.GetLogger(),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-	)
-	log.SetLogger(logger)
-
-	rtmServer, err := rtmTr.NewServer(
-		// NOTE: 由于 [agrtm.IRtmClient] 为单例模式，[rtmTr.Server] 不应该主导全局的 [agrtm.IRtmClient] 实例创建过程。
-		// 所以这里提供了 [transport.RtmClientSupplier] 抽象接口。
-		// [transport.RtmClientSupplier] 负责初始化 [agrtm.IRtmClient] 并完成相应的登录操作。
-		rtmTr.DefaultRtmSupplier(appId, appCert, userId),
-		rtmTr.Logger(logger),
-		rtmTr.Middleware(
-			logging.Server(log.GetLogger()),
-		),
-	)
+	// Create RTM Client
+	rtmClient, err := rtmTr.DefaultRtmSupplier(appId, appCert, userId)()
 	if err != nil {
 		panic(err)
 	}
+	defer rtmClient.Logout()
+	defer rtmClient.Release()
 
-	mySvc := &example.MyService{}
-	rtmServer.Subscribe(channelName, mySvc)
+	ctx := context.Background()
 
-	app := kratos.New(
-		kratos.Logger(log.GetLogger()),
-		kratos.Server(
-			rtmServer,
-		),
-	)
-
-	// start and wait for stop signal
-	if err := app.Run(); err != nil {
+	// Example for async/await with Subscribe Message Channel
+	subscribeRes, err := rtmAsync.Call[int](func() (ret int, reqId uint64) {
+		return rtmClient.Subscribe(channelName, agrtm.NewSubscribeOptions())
+	}).Await(ctx)
+	if err != nil {
 		panic(err)
 	}
+	log.Infof("Subscribe result: %+v", subscribeRes)
+
+	// Example for async/await with Publish on Message Channel
+	publishRes, err := rtmAsync.Call[int](func() (ret int, reqId uint64) {
+		return rtmClient.Publish(channelName, []byte("hello world!"), &agrtm.PublishOptions{
+			ChannelType:    agrtm.RtmChannelTypeMESSAGE,
+			MessageType:    agrtm.RtmMessageTypeSTRING,
+			CustomType:     "",
+			StoreInHistory: false,
+		})
+	}).Await(ctx)
+	if err != nil {
+		panic(err)
+	}
+	log.Infof("Publish result: %+v", publishRes)
+
+	// Example for async/await with WhoNow API
+	whoNowRes, err := rtmAsync.Call[int](func() (ret int, reqId uint64) {
+		ret = rtmClient.GetPresence().WhoNow(channelName,
+			agrtm.RtmChannelTypeMESSAGE,
+			agrtm.NewPresenceOptions(),
+			&reqId,
+		)
+		return ret, reqId
+	}).Await(ctx)
+	if err != nil {
+		panic(err)
+	}
+	log.Infof("WhoNow result: %+v", whoNowRes)
 }
